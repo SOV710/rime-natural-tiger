@@ -1,0 +1,28 @@
+# Rime build and runtime state
+/build/
+/*.userdb/
+/*.userdb/**
+/*.userdb.txt
+/installation.yaml
+/user.yaml
+
+# Local Rime sync outputs and diagnostics
+/sync/state.json
+/sync/deploy-error.log
+/sync/*.log
+/sync/*/
+/rime-sync-stage-*/
+
+# Manual archive of the pre-refactor configuration
+/bak/
+
+# Editor, OS, and ad-hoc local files
+/.codex/
+/.agents/
+*.swp
+*.swo
+*~
+.DS_Store
+*.log
+__pycache__/
+*.py[cod]

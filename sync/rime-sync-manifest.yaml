@@ -1,0 +1,111 @@
+version: 2
+destination: /home/sov710/.local/share/fcitx5/rime
+
+deploy:
+  shared_data_dir: /usr/share/rime-data
+
+local_files:
+  protect:
+    - default.yaml
+    - "*.custom.yaml"
+    - installation.yaml
+    - user.yaml
+    - custom_phrase.txt
+    - "*.userdb/**"
+    - bak/**
+    - .git/**
+    - .codex/**
+    - .agents/**
+
+schema_patches:
+  huma_rime:
+    - tiger.schema.yaml
+    - tigress.schema.yaml
+  stroke:
+    - stroke.schema.yaml
+
+sources:
+  rime_frost:
+    root: /home/sov710/proj/rime-frost
+    files:
+      - rime_frost.schema.yaml
+      - rime_frost_double_pinyin.schema.yaml
+      - rime_frost_double_pinyin_flypy.schema.yaml
+      - rime_frost_double_pinyin_mspy.schema.yaml
+      - melt_eng.schema.yaml
+      - radical_pinyin.schema.yaml
+      - rime_frost_aux.schema.yaml
+      - rime_frost.dict.yaml
+      - rime_frost_aux.dict.yaml
+      - melt_eng.dict.yaml
+      - radical_pinyin.dict.yaml
+      - key_bindings.yaml
+      - punctuation.yaml
+      - symbols.yaml
+      - symbols_v.yaml
+      - zh-moqi.gram
+      - lua/**
+      - cn_dicts/**
+      - cn_dicts_cell/**
+      - en_dicts/**
+      - opencc/**
+    exclude:
+      - rime_frost_t9.schema.yaml
+      - rime_frost_double_pinyin_abc.schema.yaml
+      - rime_frost_double_pinyin_sogou.schema.yaml
+      - rime_frost_double_pinyin_ziguang.schema.yaml
+      - rime_frost_wubi86.schema.yaml
+      - rime_frost_wubi86.dict.yaml
+      - rime_frost_moqi_single_xh.schema.yaml
+      - rime_frost_moqi_single_xh.dict.yaml
+      - t9.schema.yaml
+      - cangjie5.schema.yaml
+      - cangjie5.dict.yaml
+      - stroke.schema.yaml
+      - stroke.dict.yaml
+
+  huma_rime:
+    root: /home/sov710/proj/huma-rime
+    files:
+      - tiger.schema.yaml
+      - tigress.schema.yaml
+      - core2022.schema.yaml
+      - easy_english.schema.yaml
+      - tiger.dict.yaml
+      - tiger.extended.dict.yaml
+      - tigress.dict.yaml
+      - tigress.extended.dict.yaml
+      - tigress_ci.dict.yaml
+      - tigress_simp_ci.dict.yaml
+      - core2022.dict.yaml
+      - easy_english.dict.yaml
+      - rime.lua
+      - symbols.yaml
+      - lua/**
+      - opencc/pinyin.json
+      - opencc/PYCharacters.txt
+      - opencc/PYPhrases.txt
+      - opencc/hu_cf.json
+      - opencc/hu_cf.txt
+      - opencc/st_tu.json
+      - opencc/STCharacters_Tu.txt
+    exclude:
+      - PY_c.schema.yaml
+      - PY_c.dict.yaml
+      - stroke.schema.yaml
+      - stroke.dict.yaml
+      - default.custom.yaml
+      - tiger.custom.yaml
+      - tigress.custom.yaml
+      - squirrel.custom.yaml
+
+  rime_stroke:
+    root: /home/sov710/proj/rime-stroke
+    files:
+      - stroke.schema.yaml
+      - stroke.dict.yaml
+
+conflicts:
+  symbols.yaml:
+    owner: rime_frost
+    reason: white-frost symbols remain the global preset used by enabled frost schemes.

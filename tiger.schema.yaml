@@ -1,0 +1,387 @@
+schema:
+  author:
+  - {}
+  dependencies:
+  - core2022
+  - easy_english
+  - rime_frost
+  - rime_frost_double_pinyin
+  - rime_frost_double_pinyin_flypy
+  - rime_frost_double_pinyin_mspy
+  - stroke
+  description: '虎码官方单字
+
+    敲 ` 鍵進入拼音反查
+
+    '
+  name: 虎码官方单字
+  schema_id: tiger
+  version: 0.9
+switches:
+- name: ascii_mode
+  reset: 0
+  states:
+  - 中文
+  - 西文
+- name: extended_char
+  reset: 1
+  states:
+  - 全字集
+  - 常用字
+- name: pinyin
+  reset: 0
+  states:
+  - 拼
+  - pīn
+- name: emoji_cn
+  reset: 0
+  states:
+  - 🈚
+  - 🈶
+- name: chaifen
+  reset: 0
+  states:
+  - 拆隐
+  - 拆显
+- name: simplification
+  reset: 0
+  states:
+  - 简中
+  - 繁中
+- options:
+  - _keyboard_default
+  - _keyboard_defaultbk
+  - _keyboard_defaultwk
+  reset: 0
+  states:
+  - 有刻
+  - 半刻
+  - 无刻
+- name: charset_comment_filter
+  reset: 0
+  states:
+  - U区关
+  - U区开
+- name: udpf_switch
+  reset: 0
+  states:
+  - U编关
+  - U编开
+- name: ascii_punct
+  reset: 0
+  states:
+  - 。，
+  - ．，
+- options:
+  - _keyboard_default
+  - _keyboard_defaultzj
+  reset: 0
+  states:
+  - 助记关
+  - 助记开
+- name: full_shape
+  reset: 0
+  states:
+  - 半角
+  - 全角
+engine:
+  processors:
+  - ascii_composer
+  - recognizer
+  - key_binder
+  - speller
+  - punctuator
+  - lua_processor@exe_processor
+  - selector
+  - navigator
+  - express_editor
+  segmentors:
+  - ascii_segmentor
+  - matcher
+  - affix_segmentor@easy_english
+  - affix_segmentor@frost_pinyin_lookup
+  - affix_segmentor@frost_zrm_lookup
+  - affix_segmentor@frost_flypy_lookup
+  - affix_segmentor@frost_mspy_lookup
+  - affix_segmentor@stroke_lookup
+  - abc_segmentor
+  - punct_segmentor
+  - fallback_segmentor
+  translators:
+  - punct_translator
+  - script_translator@frost_pinyin_lookup
+  - script_translator@frost_zrm_lookup
+  - script_translator@frost_flypy_lookup
+  - script_translator@frost_mspy_lookup
+  - table_translator@stroke_lookup
+  - table_translator
+  - table_translator@easy_english
+  - history_translator@historyDM
+  - history_translator@historyDM2
+  - history_translator@historyDM3
+  - history_translator@historySJ
+  - lua_translator@number_translator
+  - lua_translator@calculator_translator
+  - lua_translator@shijian2_translator
+  filters:
+  - lua_filter@core2022
+  - simplifier@simplification
+  - simplifier@pinyin
+  - simplifier@chaifen
+  - simplifier@emoji_cn
+  - lua_filter@charset_comment_filter
+  - lua_filter@lua_unicode_display_filter
+  - reverse_lookup_filter@frost_pinyin_reverse_lookup
+  - reverse_lookup_filter@frost_zrm_reverse_lookup
+  - reverse_lookup_filter@frost_flypy_reverse_lookup
+  - reverse_lookup_filter@frost_mspy_reverse_lookup
+  - reverse_lookup_filter@stroke_reverse_lookup
+  - uniquifier
+speller:
+  auto_clear: max_length
+  auto_select: true
+  max_code_length: 4
+  alphabet: '[;''zyxwvutsrqponmlkjihgfedcba]'
+  auto_select_pattern: ^;\w+
+translator:
+  dictionary: tiger.extended
+  enable_charset_filter: false
+  enable_encoder: false
+  enable_sentence: false
+  encode_commit_history: false
+  enable_user_dict: false
+  enable_completion: false
+  comment_format:
+  - xform/~/ /
+  prism: tiger
+reverse_lookup:
+  tag: frost_pinyin_lookup
+  dictionary: rime_frost
+  prism: rime_frost
+  prefix: '`'
+  tips: 〔白霜全拼反查〕
+  closing_tips: 〔反查关闭〕
+  enable_user_dict: false
+  enable_completion: true
+  comment_format:
+  - erase/^.*$/
+  preedit_format:
+  - xform/([nl])v/$1ü/
+  - xform/([nl])ue/$1üe/
+  - xform/([jqxy])v/$1u/
+key_binder:
+  bindings:
+  - accept: semicolon
+    send: 2
+    when: has_menu
+  - when: has_menu
+    accept: apostrophe
+    send: 3
+  - when: composing
+    accept: Tab
+    send: Escape
+  - when: has_menu
+    accept: minus
+    send: Page_Up
+  - when: has_menu
+    accept: equal
+    send: Page_Down
+  - accept: Control+o
+    toggle: simplification
+    when: composing
+  - accept: Control+p
+    toggle: pinyin
+    when: composing
+  - accept: Control+i
+    toggle: emoji_cn
+    when: composing
+  - accept: Control+u
+    toggle: charset_comment_filter
+    when: composing
+  - accept: Control+y
+    toggle: udpf_switch
+    when: composing
+  - accept: Control+h
+    toggle: extended_char
+    when: composing
+  - accept: Control+Shift+H
+    toggle: extended_char
+    when: composing
+  - accept: Control+j
+    toggle: chaifen
+    when: composing
+  - when: has_menu
+    accept: Right
+    send: Down
+  - when: has_menu
+    accept: Left
+    send: Up
+  - when: always
+    accept: Control+period
+    toggle: ascii_punct
+recognizer:
+  import_preset: default
+  patterns:
+    punct: ^/([0-9]0?|[A-Za-z]+)$
+    reverse_lookup: ^`([a-z]+'?)*$
+    easy_english: ^'[A-Z|a-z]*`?$
+    expression: ^=.*$
+    frost_pinyin_lookup: ^`([a-z]+'?)*$
+    frost_zrm_lookup: ^`Z([a-z]+'?)*$
+    frost_flypy_lookup: ^`X([a-z]+'?)*$
+    frost_mspy_lookup: ^`M([a-z;]+'?)*$
+    stroke_lookup: ^`B([hspnz]+'?)*$
+historySJ:
+  input: z
+  size: 1
+  initial_quality: 0
+historyDM:
+  input: '['
+  size: 1
+  initial_quality: 999
+historyDM2:
+  input: ''''
+  size: 1
+  initial_quality: -999
+historyDM3:
+  input: ']'
+  size: 1
+  initial_quality: 999
+simplification:
+  opencc_config: st_tu.json
+  option_name: simplification
+  tips: all
+pinyin:
+  opencc_config: pinyin.json
+  option_name: pinyin
+  show_in_comment: true
+  comment_format:
+  - xform/&nbsp;/ /
+  tips: char
+  tags:
+  - abc
+  - tiger
+  - tigress
+  - frost_pinyin_lookup
+  - frost_zrm_lookup
+  - frost_flypy_lookup
+  - frost_mspy_lookup
+  - stroke_lookup
+emoji_cn:
+  opencc_config: emoji.json
+  option_name: emoji_cn
+  tips: all
+easy_english:
+  dictionary: easy_english
+  tag: easy_english
+  prefix: ''''
+  tips: 〔En〕
+  enable_completion: true
+  enable_sentence: false
+  initial_quality: -1
+  preedit_format:
+  - xlit|_| |
+  comment_format:
+  - xform/~/ /
+chaifen:
+  opencc_config: hu_cf.json
+  option_name: chaifen
+  show_in_comment: true
+  comment_format:
+  - xform/&nbsp;/ /
+  tags:
+  - abc
+  - tiger
+  - tigress
+  - reverse_lookup
+  - frost_pinyin_lookup
+  - frost_zrm_lookup
+  - frost_flypy_lookup
+  - frost_mspy_lookup
+  - stroke_lookup
+  tips: all
+punctuator:
+  import_preset: symbols
+frost_pinyin_lookup:
+  tag: frost_pinyin_lookup
+  dictionary: rime_frost
+  prism: rime_frost
+  prefix: '`'
+  tips: 〔白霜全拼反查〕
+  closing_tips: 〔反查关闭〕
+  enable_user_dict: false
+  enable_completion: true
+  comment_format:
+  - erase/^.*$/
+frost_zrm_lookup:
+  tag: frost_zrm_lookup
+  dictionary: rime_frost
+  prism: rime_frost_double_pinyin
+  prefix: '`Z'
+  tips: 〔白霜自然码反查〕
+  closing_tips: 〔反查关闭〕
+  enable_user_dict: false
+  enable_completion: true
+  comment_format:
+  - erase/^.*$/
+frost_flypy_lookup:
+  tag: frost_flypy_lookup
+  dictionary: rime_frost
+  prism: rime_frost_double_pinyin_flypy
+  prefix: '`X'
+  tips: 〔白霜小鹤反查〕
+  closing_tips: 〔反查关闭〕
+  enable_user_dict: false
+  enable_completion: true
+  comment_format:
+  - erase/^.*$/
+frost_mspy_lookup:
+  tag: frost_mspy_lookup
+  dictionary: rime_frost
+  prism: rime_frost_double_pinyin_mspy
+  prefix: '`M'
+  tips: 〔白霜微软反查〕
+  closing_tips: 〔反查关闭〕
+  enable_user_dict: false
+  enable_completion: true
+  comment_format:
+  - erase/^.*$/
+stroke_lookup:
+  tag: stroke_lookup
+  dictionary: stroke
+  prefix: '`B'
+  tips: 〔五筆畫反查〕
+  closing_tips: 〔反查关闭〕
+  enable_user_dict: false
+  enable_completion: true
+  initial_quality: 0.5
+  preedit_format:
+  - xform/^([hspnz]+)$/$1\t（\U$1\E）/
+  - xlit/HSPNZ/一丨丿丶乙/
+  comment_format:
+  - erase/^.*$/
+frost_pinyin_reverse_lookup:
+  tags:
+  - frost_pinyin_lookup
+  dictionary: tiger
+  overwrite_comment: true
+frost_zrm_reverse_lookup:
+  tags:
+  - frost_zrm_lookup
+  dictionary: tiger
+  overwrite_comment: true
+frost_flypy_reverse_lookup:
+  tags:
+  - frost_flypy_lookup
+  dictionary: tiger
+  overwrite_comment: true
+frost_mspy_reverse_lookup:
+  tags:
+  - frost_mspy_lookup
+  dictionary: tiger
+  overwrite_comment: true
+stroke_reverse_lookup:
+  tags:
+  - stroke_lookup
+  dictionary: tiger
+  overwrite_comment: true
