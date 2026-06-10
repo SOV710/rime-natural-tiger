@@ -18,7 +18,7 @@ except ImportError:
     sys.exit(2)
 
 
-PATCH_VERSION = 3
+PATCH_VERSION = 5
 
 
 def run(cmd, cwd=None, check=True):
@@ -135,7 +135,7 @@ def git_prepare_repo(repo_root: Path):
     if not upstream:
         raise RuntimeError(f"Repo has no upstream: {repo_root}")
 
-    run_with_retries(["git", "fetch", "--prune", "--tags"], cwd=repo_root)
+    run_with_retries(["git", "fetch", "--prune", "--tags", "--force"], cwd=repo_root)
 
     counts = run(
         ["git", "rev-list", "--left-right", "--count", f"{upstream}...HEAD"],
@@ -388,7 +388,7 @@ def patch_huma_schema(path: Path):
     ]:
         data[name] = {
             "tags": [tag],
-            "dictionary": schema_id,
+            "dictionary": "tigress.extended",
             "overwrite_comment": True,
         }
 

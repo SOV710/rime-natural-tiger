@@ -363,25 +363,25 @@ stroke_lookup:
 frost_pinyin_reverse_lookup:
   tags:
   - frost_pinyin_lookup
-  dictionary: tigress
+  dictionary: tigress.extended
   overwrite_comment: true
 frost_zrm_reverse_lookup:
   tags:
   - frost_zrm_lookup
-  dictionary: tigress
+  dictionary: tigress.extended
   overwrite_comment: true
 frost_flypy_reverse_lookup:
   tags:
   - frost_flypy_lookup
-  dictionary: tigress
+  dictionary: tigress.extended
   overwrite_comment: true
 frost_mspy_reverse_lookup:
   tags:
   - frost_mspy_lookup
-  dictionary: tigress
+  dictionary: tigress.extended
   overwrite_comment: true
 stroke_reverse_lookup:
   tags:
   - stroke_lookup
-  dictionary: tigress
+  dictionary: tigress.extended
   overwrite_comment: true
