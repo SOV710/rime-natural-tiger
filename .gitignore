@@ -26,3 +26,6 @@
 *.log
 __pycache__/
 *.py[cod]
+
+# Debug Runtime
+/easy_english.userdb.old/
