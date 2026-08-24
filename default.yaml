@@ -10,6 +10,7 @@ schema_list:
   - schema: rime_frost_double_pinyin      # 白霜自然码双拼
   - schema: rime_frost_double_pinyin_flypy # 白霜小鹤双拼
   - schema: rime_frost_double_pinyin_mspy # 白霜微软双拼
+  - schema: stroke
 
 menu:
   page_size: 8
