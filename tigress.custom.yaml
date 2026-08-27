@@ -1,0 +1,3 @@
+patch:
+  "translator/dictionary": tigress_user
+  "translator/enable_user_dict": false
